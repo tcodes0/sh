@@ -45,7 +45,6 @@ create() {
 
 validateInput "$@"
 
-# shellcheck source=../.env
 source .env
 
 create "up" "$1"

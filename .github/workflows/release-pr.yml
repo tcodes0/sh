@@ -29,9 +29,12 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 1.22
+      - run: go install github.com/tcodes0/go/cmd/changelog@v0.1.5
 
       - name: Update changelog
         shell: bash
+        env:
+          CHANGELOG_FILE: CHANGELOG.md
         run: ./sh/workflows/release/changelog.sh ${{ inputs.module }}
 
       - name: Open PR

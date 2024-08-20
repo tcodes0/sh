@@ -89,6 +89,12 @@ push_tags() {
 ### script ###
 
 validate
+
+if [ ! "${CHANGELOG_FILE-}" ]; then
+  # shellcheck source=../../.env
+  source .env
+fi
+
 parsed_tags="$(parse_changelog)"
 # shellcheck disable=SC2068 # intentional splitting
 validate_tags ${parsed_tags[@]}

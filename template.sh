@@ -26,4 +26,4 @@ validateInput() {
 ### script ###
 
 usage "$@"
-validateInput
+validateInput "$@"

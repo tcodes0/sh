@@ -25,7 +25,7 @@ updateChangelog() {
   changelog=$(cat "$CHANGELOG_FILE")
   flags+=(-module "$module")
 
-  changes=$(go run ./cmd/changelog/main.go "${flags[@]}")
+  changes=$(changelog "${flags[@]}")
   if [ ! "$changes" ]; then
     err $LINENO "empty changes"
     return 1
@@ -38,6 +38,11 @@ updateChangelog() {
 ### script ###
 
 module=$1
+
+if [ ! "${CHANGELOG_FILE-}" ]; then
+  # shellcheck source=../../.env
+  source .env
+fi
 
 validate
 updateChangelog "$module"
