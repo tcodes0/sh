@@ -9,24 +9,38 @@ shopt -s globstar
 source "$PWD/lib.sh"
 trap 'err $LINENO' ERR
 
+##########################
 ### vars and functions ###
+##########################
 
 usage() {
-  if requestedHelp "$*"; then
-    msgln "usage: $0 [migration name]"
-    exit 1
-  fi
+  command cat <<-EOF
+Usage:
+Create a new sql migration with a structured name
+
+$0 [migration name]
+EOF
 }
 
-validateInput() {
+# Description: Validates user input
+# Args       : $@
+# STDERR     : Might print errors
+# Example    : validate_input "$@"
+validate_input() {
   name=${1-}
 
   if [ ! "$name" ]; then
     err $LINENO "missing migration name"
-    usage -h
+    usage
+    exit 1
   fi
 }
 
+# Description: Create a new timestamped migration file
+# Args       : 1=(up | down) 2=name
+# STDOUT     : Path to the new file
+# Sideeffects: Creates a new file
+# Example    : create "up" "create_table"
 create() {
   # shellcheck disable=2155
   local epoch=$(date +"%s") ymd=$(date +"%Y_%m_%d") prefix="$1" raw_name="$2" name filename
@@ -40,9 +54,16 @@ create() {
   msgln "$PWD/$MIGRATIONS_DIR/$filename"
 }
 
+##############
 ### script ###
+##############
 
-validateInput "$@"
+if requested_help "$*"; then
+  usage
+  exit 1
+fi
+
+validate_input "$@"
 
 source .env
 
