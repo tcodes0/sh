@@ -35,7 +35,7 @@ jobs:
         shell: bash
         env:
           CHANGELOG_FILE: CHANGELOG.md
-        run: ./sh/workflows/release/changelog.sh ${{ inputs.module }}
+        run: ./workflows/release/changelog.sh ${{ inputs.module }}
 
       - name: Open PR
         uses: peter-evans/create-pull-request@v6.1.0
