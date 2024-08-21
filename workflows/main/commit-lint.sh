@@ -6,8 +6,8 @@
 
 set -euo pipefail
 shopt -s globstar
-# shellcheck source=lib.sh
-source "$PWD/sh/lib.sh"
+# shellcheck source=../../lib.sh
+source "$PWD/lib.sh"
 trap 'err $LINENO' ERR
 
 ### vars and functions ###

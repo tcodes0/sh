@@ -6,8 +6,7 @@
 
 set -euo pipefail
 shopt -s globstar
-# shellcheck source=lib.sh
-source "$PWD/sh/lib.sh"
+source "$PWD/lib.sh"
 
 ### vars and functions ###
 
