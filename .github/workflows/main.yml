@@ -65,7 +65,7 @@ jobs:
           VERSION: 19.3.0
           # will not be set when running on push/merge to main
           BASE_REF: ${{ github.event.pull_request.base.ref }}
-        run: ./workflows/main/commit-lint.sh
+        run: ./workflows/main/commit_lint.sh
 
   shell:
     name: lint_format_shell
