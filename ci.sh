@@ -22,13 +22,13 @@ Usage:
 Wrapper around act that runs ci workflows and presents output in a friendly way
 
 $0
-run with github actions [event] and repo module [module]
+run with github actions pull-request event
 
 $0 push
 send a push event
 
 $0 dispatch pizza
-run release-pr workflow with module=pizza
+run release-pr workflow with tagprefix=pizza
 EOF
 }
 
@@ -94,14 +94,14 @@ validate() {
 }
 
 # Description: Initializes ci log and event json file
-# Args       : 1=github actions event, 2=module
+# Args       : 1=github actions event, 2=tagprefix
 # STDOUT     : event_type, log_file, event_json_file
 # Returns    : event_type, log_file, event_json_file
 # Sideeffects: Makes 2 temporary log files
 # Example    : prepare_logs push pizza
 prepare_logs() {
   local gitLocalBranch prJson eventJson pushJson releasePrJson
-  local event="${1-}" module="${2-}" event_json_file ciLog eventType
+  local event="${1-}" tag_prefix="${2-}" event_json_file ciLog eventType
 
   gitLocalBranch=$(git branch --show-current)
   prJson="
@@ -129,7 +129,9 @@ prepare_logs() {
   releasePrJson="
 {
   \"inputs\": {
-    \"module\": \"$module\"
+    \"tag_prefix\": \"$tag_prefix\",
+    \"title\": \"CI Release\",
+    \"url\": \"https://github.com/tcodes0/sh\"
   },
   \"local\": true
 }
