@@ -224,6 +224,7 @@ main() {
 
   printf "\e[H\e[2J" # move 1-1, clear whole screen
   msgln "    running ci..."
+  trap 'msgln \\nsee partial ci log at $log_file' INT
 
   while ps -p "$ci_pid" >/dev/null; do
     draw_progress "$log_file"
