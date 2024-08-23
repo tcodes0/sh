@@ -8,6 +8,7 @@
 
 set -euo pipefail
 shopt -s globstar
+trap 'err $LINENO' ERR
 
 ##############
 ### script ###

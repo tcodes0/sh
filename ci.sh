@@ -40,6 +40,8 @@ EOF
 push_job() {
   local type="$1" job="$2"
 
+  job=$(echo -n "$job" | tr -s ' ')
+
   if [ "$type" == "fail" ]; then
     if [[ "${failed_jobs[*]}" != *${job}* ]]; then
       failed_jobs+=("$job")
