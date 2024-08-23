@@ -42,19 +42,19 @@ validate() {
 # Returns    : Parsed tags
 # Example    : tags="$(parse_changelog_tags)"
 parse_changelog_tags() {
-  local tags=() newest_date module version date
-  local changelog_h1_re="#[[:blank:]]+([[:alnum:]]+):[[:blank:]]+(v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)[[:blank:]]+\*\(([[:digit:]]+-[[:digit:]]+-[[:digit:]]+)"
+  local tags=() newest_date tag date
+  # https://regex101.com/r/67rzeb/4
+  local changelog_h1_re="#[[:blank:]]+(?:[a-zA-Z0-9 !%&*()-+]+:)?[[:blank:]]*([a-zA-Z0-9\/.]+)[[:blank:]]+\*\(([[:digit:]]+-[[:digit:]]+-[[:digit:]]+)"
 
   while read -r line; do
     if ! [[ "$line" =~ $changelog_h1_re ]]; then
       # want only release lines, h1 in md
-      # one or more lines with modules to release
+      # one or more lines with tags
       continue
     fi
 
-    module="${BASH_REMATCH[1]}"
-    version="${BASH_REMATCH[2]}"
-    date="${BASH_REMATCH[3]}"
+    tag="${BASH_REMATCH[1]}"
+    date="${BASH_REMATCH[2]}"
 
     if [ ! "${newest_date:-}" ]; then
       # want to push tags for the newest release only
@@ -67,7 +67,7 @@ parse_changelog_tags() {
       break
     fi
 
-    tags+=("$module/$version")
+    tags+=("$tag")
   done <"$CHANGELOG_FILE"
 
   printf %s "${tags[*]}"

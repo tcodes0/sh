@@ -94,7 +94,7 @@ validate() {
 }
 
 # Description: Initializes ci log and event json file
-# Args       : 1=github actions event, 2=tagprefix
+# Args       : 1=github actions event, 2=tagprefix (see release-pr workflow)
 # STDOUT     : event_type, log_file, event_json_file
 # Returns    : event_type, log_file, event_json_file
 # Sideeffects: Makes 2 temporary log files
