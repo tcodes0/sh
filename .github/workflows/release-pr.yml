@@ -1,0 +1,64 @@
+name: release-pr
+run-name: release PR ${{ github.ref }}@${{ github.sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Github repository URL to point commit links at
+        required: true
+        type: string
+      title:
+        description: Release title; new version and date will be added
+        type: string
+      tag_prefix:
+        description: Prefix to be concatenated to semver tag, i.e ${PREFIX}v1.0.0
+        type: string
+
+jobs:
+  release-pr:
+    name: release PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch
+        if: github.ref != 'refs/heads/main' && github.event.local != true
+        run: |
+          echo expected main, got: ${{ github.ref }} && exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Set up Go (local)
+        if: github.event.local == true
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22
+      - run: go install ./cmd/changelog
+
+      - name: Set up Go
+        if: github.event.local != true
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22
+      - run: go install github.com/tcodes0/go/cmd/changelog@v0.1.5
+
+      - name: Update changelog
+        shell: bash
+        env:
+          CHANGELOG_FILE: CHANGELOG.md
+        run: ./workflows/release/changelog.sh "${{ inputs.url }}" "${{ inputs.title }}" "${{ inputs.tag_prefix }}"
+
+      - name: Open PR
+        uses: peter-evans/create-pull-request@v6.1.0
+        if: github.event.local != true
+        with:
+          commit-message: "chore: release ${{ inputs.title }}"
+          title: "chore: release ${{ inputs.title }}"
+          add-paths: .
+          body: ""
+          committer: release-workflow <41898282+github-actions[bot]@users.noreply.github.com>
+          branch: release-${{ inputs.title }}
+          branch-suffix: random

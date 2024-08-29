@@ -1,0 +1,122 @@
+name: main
+run-name: ${{ github.head_ref }}@${{ github.sha }}
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  changed-files:
+    name: analyze_changed_files
+    runs-on: ubuntu-latest
+    outputs:
+      config: ${{ steps.list-changed-files.outputs.config_all_changed_files }}
+      doc: ${{ steps.list-changed-files.outputs.doc_all_changed_files }}
+      shell: ${{ steps.list-changed-files.outputs.shell_all_changed_files }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Changed files
+        id: list-changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          # since_last_remote_commit: true # use only for testing, it's easy to produce no changed files
+          files_yaml_from_source_file: .changed-files.yml
+
+  debug:
+    name: debug
+    runs-on: ubuntu-latest
+    if: false # change to debug
+    env:
+      HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+    steps:
+      - name: Debug
+        run: true
+
+  commitlint:
+    name: commit_lint
+    runs-on: ubuntu-latest
+    needs: changed-files
+    env:
+      # will not be set when running on push/merge to main
+      PR_TITLE: ${{ github.event.pull_request.title }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create package-lock.json
+        run: echo '{}' > package-lock.json
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: lts/iron
+          cache: npm
+      - run: npm --global install @commitlint/config-conventional
+
+      - name: Run commitlint
+        env:
+          CONFIG_PATH: .commitlintrc.yml
+          VERSION: 19.3.0
+          # will not be set when running on push/merge to main
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: ./workflows/main/commit_lint.sh
+
+  shell:
+    name: lint_format_shell
+    runs-on: ubuntu-latest
+    needs: changed-files
+    if: needs.changed-files.outputs.shell
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint and format
+        uses: luizm/action-sh-checker@v0.8.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHFMT_OPTS: -d -i 2 -ln bash
+          SHELLCHECK_OPTS: -x --severity=warning
+        with:
+          sh_checker_only_diff: true
+          # needs write access https://github.com/luizm/action-sh-checker/pull/57
+          # sh_checker_comment: true
+
+  config:
+    name: format_config
+    runs-on: ubuntu-latest
+    needs: changed-files
+    if: needs.changed-files.outputs.config
+    env:
+      FILES: ${{ needs.changed-files.outputs.config }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prettier
+        uses: actionsx/prettier@v3
+        with:
+          args: --check ${{ env.FILES }}
+
+  spellcheck:
+    name: spellcheck
+    runs-on: ubuntu-latest
+    needs: changed-files
+    # doesn't work on local ci, finds 0 files and gives false ok
+    if: (needs.changed-files.outputs.shell || needs.changed-files.outputs.doc) && github.event.local != true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cspell
+        uses: streetsidesoftware/cspell-action@v6.4.0
+        with:
+          files: "."
+          incremental_files_only: true
+          config: ./cspell.config.yml

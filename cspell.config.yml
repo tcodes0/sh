@@ -1,0 +1,88 @@
+# https://cspell.org/configuration/
+$schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
+version: "0.2"
+language: en
+allowCompoundWords: true
+maxNumberOfProblems: 7
+dictionaries:
+  - en-US
+  - bash
+  - docker
+  - filetypes
+  - fullstack
+  - golang
+  - k8s
+  - lorem-ipsum
+  - softwareTerms
+  - computing-acronyms
+ignorePaths:
+  - "**/go.sum"
+words:
+  - alnum
+  - cipush
+  - cmds
+  - commitlintrc
+  - debugf
+  - erro
+  - gocognit
+  - gocritic
+  - gocyclo
+  - godotenv
+  - gofmt
+  - gofumpt
+  - goimports
+  - goinstall
+  - golangci
+  - gomodifytags
+  - gopkgs
+  - gopls
+  - gorun
+  - gosec
+  - gotestfmt
+  - gotests
+  - govet
+  - gsed
+  - ifaceassert
+  - iname
+  - infof
+  - inpackage
+  - inplace
+  - maintidx
+  - nocasematch
+  - noctx
+  - nolint
+  - nolintlint
+  - objx
+  - printc
+  - ribeiro
+  - samber
+  - scandir
+  - shellcheck
+  - shfmt
+  - stretchr
+  - tcodes0
+  - thom
+  - thomazella
+  - tparallel
+  - unappend
+  - unmarshaled
+  - unmarshaling
+  - unmarshals
+  - warnf
+  - wrapf
+  - wrapfl
+  - xerrors
+  - davecgh
+  - mvdan
+  - joho
+  - fatih
+  - uudashr
+  - msgln
+  - cweill
+  - ramya
+  - haya
+  - busa
+  - pmezard
+  - assistd
+  - honnef
+  - meepo
