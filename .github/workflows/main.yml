@@ -44,6 +44,7 @@ jobs:
     env:
       # will not be set when running on push/merge to main
       PR_TITLE: ${{ github.event.pull_request.title }}
+      BASH_ENV: ./lib.sh
     steps:
       - name: Checkout
         uses: actions/checkout@v4
