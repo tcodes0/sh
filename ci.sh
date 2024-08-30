@@ -28,7 +28,7 @@ $0 push
 send a push event
 
 $0 dispatch pizza
-run release-pr workflow with tagprefix=pizza
+run release_pr workflow with tagprefix=pizza
 EOF
 }
 
@@ -96,7 +96,7 @@ validate() {
 }
 
 # Description: Initializes ci log and event json file
-# Args       : 1=github actions event, 2=tagprefix (see release-pr workflow)
+# Args       : 1=github actions event, 2=tagprefix (see release_pr workflow)
 # STDOUT     : event_type, log_file, event_json_file
 # Returns    : event_type, log_file, event_json_file
 # Sideeffects: Makes 2 temporary log files
