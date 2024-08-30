@@ -8,7 +8,6 @@
 
 set -euo pipefail
 shopt -s globstar
-source "$PWD/../lib.sh"
 trap 'err $LINENO' ERR
 
 ##########################

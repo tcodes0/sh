@@ -205,6 +205,12 @@ report() {
 # Args       : Any
 # STDOUT     : User feedback, progress and report on CI run
 main() {
+  if [ ! "${LIB_LOADED:-}" ]; then
+    echo -e "INFO  ($0:$LINENO) BASH_ENV=${BASH_ENV:-}" >&2
+    echo -e "FATAL ($0:$LINENO) lib.sh not found. use 'export BASH_ENV=<lib.sh location>' or 'source .env'" >&2
+    exit 1
+  fi
+
   if requested_help "$*"; then
     usage
     exit 1
