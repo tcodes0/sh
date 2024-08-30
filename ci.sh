@@ -6,7 +6,6 @@
 
 set -euo pipefail
 shopt -s globstar
-source "$PWD/lib.sh"
 
 ##########################
 ### vars and functions ###
@@ -20,6 +19,7 @@ usage() {
   command cat <<-EOF
 Usage:
 Wrapper around act that runs ci workflows and presents output in a friendly way
+Should be called with env BASH_ENV=<path to lib.sh> else commands won't be found
 
 $0
 run with github actions pull-request event
