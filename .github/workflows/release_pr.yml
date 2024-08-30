@@ -30,6 +30,7 @@ jobs:
         with:
           fetch-tags: true
           fetch-depth: 0
+          submodules: true
 
       - name: Set up Go (local)
         if: github.event.local == true
