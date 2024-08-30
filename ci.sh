@@ -6,7 +6,6 @@
 
 set -euo pipefail
 shopt -s globstar
-source "$PWD/lib.sh"
 
 ##########################
 ### vars and functions ###
@@ -20,6 +19,7 @@ usage() {
   command cat <<-EOF
 Usage:
 Wrapper around act that runs ci workflows and presents output in a friendly way
+Should be called with env BASH_ENV=<path to lib.sh> else commands won't be found
 
 $0
 run with github actions pull-request event
@@ -28,7 +28,7 @@ $0 push
 send a push event
 
 $0 dispatch pizza
-run release-pr workflow with tagprefix=pizza
+run release_pr workflow with tagprefix=pizza
 EOF
 }
 
@@ -96,7 +96,7 @@ validate() {
 }
 
 # Description: Initializes ci log and event json file
-# Args       : 1=github actions event, 2=tagprefix (see release-pr workflow)
+# Args       : 1=github actions event, 2=tagprefix (see release_pr workflow)
 # STDOUT     : event_type, log_file, event_json_file
 # Returns    : event_type, log_file, event_json_file
 # Sideeffects: Makes 2 temporary log files
@@ -205,6 +205,12 @@ report() {
 # Args       : Any
 # STDOUT     : User feedback, progress and report on CI run
 main() {
+  if [ ! "${LIB_LOADED:-}" ]; then
+    echo -e "INFO  ($0:$LINENO) BASH_ENV=${BASH_ENV:-}" >&2
+    echo -e "FATAL ($0:$LINENO) lib.sh not found. use 'export BASH_ENV=<lib.sh location>', 'source .env' or 'BASH_ENV=<lib.sh location> $0'" >&2
+    exit 1
+  fi
+
   if requested_help "$*"; then
     usage
     exit 1

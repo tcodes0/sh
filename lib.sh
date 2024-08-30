@@ -12,6 +12,9 @@
 ### vars ###
 ############
 
+# used to check this file has been sourced
+export LIB_LOADED=true
+
 # ANSI escape codes for specific colors
 export LIB_COLOR_PASS="\e[7;38;05;242m PASS \e[0m"
 export LIB_COLOR_FAIL="\e[2;7;38;05;197;47m FAIL \e[0m"
@@ -31,7 +34,6 @@ export SED="sed"
 __log() {
   local level=$1 linenum=${2:-} msg=${*:3}
 
-  if [ ! "$msg" ]; then msg="<empty>"; fi
   if [ ! "$linenum" ]; then linenum="?"; fi
 
   echo -e "$level ($0:$linenum) $msg"

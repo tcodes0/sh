@@ -6,7 +6,6 @@
 
 set -euo pipefail
 shopt -s globstar
-source "$PWD/lib.sh"
 trap 'err $LINENO' ERR
 
 ##########################
@@ -23,20 +22,30 @@ EOF
 }
 
 # Description: Validates user input
+# Globals    : MIGRATIONS_DIR (github workflow or .env)
 # Args       : $@
 # STDERR     : Might print errors
-# Example    : validate_input "$@"
-validate_input() {
-  name=${1-}
+# Returns    : 1 if fail
+# Example    : validate "$@"
+validate() {
+  local name=${1-}
+
+  if [ ! "${MIGRATIONS_DIR:-}" ]; then
+    if ! source .env; then
+      err $LINENO "missing MIGRATIONS_DIR env variable"
+      return 1
+    fi
+  fi
 
   if [ ! "$name" ]; then
     err $LINENO "missing migration name"
     usage
-    exit 1
+    return 1
   fi
 }
 
 # Description: Create a new timestamped migration file
+# Globals    : MIGRATIONS_DIR (github workflow or .env)
 # Args       : 1=(up | down) 2=name
 # STDOUT     : Path to the new file
 # Sideeffects: Creates a new file
@@ -58,14 +67,18 @@ create() {
 ### script ###
 ##############
 
+if [ ! "${LIB_LOADED:-}" ]; then
+  echo -e "INFO  ($0:$LINENO) BASH_ENV=${BASH_ENV:-}" >&2
+  echo -e "FATAL ($0:$LINENO) lib.sh not found. use 'export BASH_ENV=<lib.sh location>', 'source .env' or 'BASH_ENV=<lib.sh location> $0'" >&2
+  exit 1
+fi
+
 if requested_help "$*"; then
   usage
   exit 1
 fi
 
-validate_input "$@"
-
-source .env
+validate "$@"
 
 create "up" "$1"
 create "down" "$1"

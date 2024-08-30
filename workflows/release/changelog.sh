@@ -9,8 +9,6 @@
 
 set -euo pipefail
 shopt -s globstar
-# shellcheck source=../../lib.sh
-source "$PWD/lib.sh"
 trap 'err $LINENO' ERR
 
 ##########################
@@ -22,6 +20,13 @@ trap 'err $LINENO' ERR
 # Returns    : 1 if fail
 # Example    : validate
 validate() {
+  if [ ! "${CHANGELOG_FILE-}" ]; then
+    if ! source .env; then
+      err $LINENO "missing CHANGELOG_FILE env variable"
+      return 1
+    fi
+  fi
+
   if [ ! -f "$CHANGELOG_FILE" ]; then
     err $LINENO "$CHANGELOG_FILE" not found
     return 1
@@ -56,11 +61,6 @@ update_changelog() {
 ##############
 ### script ###
 ##############
-
-if [ ! "${CHANGELOG_FILE-}" ]; then
-  # shellcheck source=../../.env
-  source .env
-fi
 
 validate
 update_changelog "$@"
