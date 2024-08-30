@@ -15,11 +15,20 @@ trap 'err $LINENO' ERR
 ##########################
 
 # Description: Exit the script if main head is doesn't match a release commit
+# Globals    : CHANGELOG_FILE (github workflow or .env)
 # STDERR     : Logs
+# Returns    : 1 if fail
 # Sideeffects: Might exit the script with success
 # Example    : validate
 validate() {
   local main_head release_re="chore:[[:blank:]]+release"
+
+  if [ ! "${CHANGELOG_FILE-}" ]; then
+    if ! source .env; then
+      err $LINENO "missing CHANGELOG_FILE env variable"
+      return 1
+    fi
+  fi
 
   while read -r commit_line; do
     main_head="$commit_line"
@@ -112,11 +121,6 @@ tag_and_push() {
 ##############
 
 validate
-
-if [ ! "${CHANGELOG_FILE-}" ]; then
-  # shellcheck source=../../.env
-  source .env
-fi
 
 parsed_tags="$(parse_changelog_tags)"
 # shellcheck disable=SC2068 # intentional splitting
