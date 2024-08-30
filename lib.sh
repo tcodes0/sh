@@ -34,7 +34,6 @@ export SED="sed"
 __log() {
   local level=$1 linenum=${2:-} msg=${*:3}
 
-  if [ ! "$msg" ]; then msg="<empty>"; fi
   if [ ! "$linenum" ]; then linenum="?"; fi
 
   echo -e "$level ($0:$linenum) $msg"
