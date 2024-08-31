@@ -51,7 +51,7 @@ validate() {
 parse_changelog_tags() {
   local tags=() newest_date tag date
   # https://regex101.com/r/67rzeb/5
-  local changelog_h1_re="#[[:blank:]]+(?:[a-zA-Z0-9 !%&*()-+]+:)?[[:blank:]]*([a-zA-Z0-9\/.]+)[[:blank:]]+\*\(([[:digit:]]+-[[:digit:]]+-[[:digit:]]+)"
+  local changelog_h1_re="#[[:blank:]]+(?:[a-zA-Z0-9 !%&*()-+]+:)?[[:blank:]]*([a-zA-Z0-9\/.]+)[[:blank:]]+[*_]\(([[:digit:]]+-[[:digit:]]+-[[:digit:]]+)"
 
   while read -r line; do
     if ! [[ "$line" =~ $changelog_h1_re ]]; then
