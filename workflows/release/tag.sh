@@ -101,7 +101,7 @@ validate_tags() {
 }
 
 # Description: Creates and pushes git tags
-# Globals    : DRY_RUN
+# Globals    : DRY_RUN (set to echo to dry run)
 # Args       : words separated by spaces
 # STDOUT     : Prints each tag created, plus git output
 # STDERR     : Git might output
