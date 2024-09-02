@@ -1,4 +1,4 @@
-# Initial Release v0.1.0 _(2024-08-30)_
+# Initial Release: v0.1.0 _(2024-08-30)_
 
 ## Features
 

@@ -38,7 +38,7 @@ validate() {
   done < <(git log --oneline --decorate)
 
   if ! [[ $main_head =~ $release_re ]]; then
-    log "main head not a release commit: $main_head"
+    log $LINENO "main head not a release commit: $main_head"
     exit 0
   fi
 }
@@ -50,8 +50,8 @@ validate() {
 # Example    : tags="$(parse_changelog_tags)"
 parse_changelog_tags() {
   local tags=() newest_date tag date
-  # https://regex101.com/r/67rzeb/4
-  local changelog_h1_re="#[[:blank:]]+(?:[a-zA-Z0-9 !%&*()-+]+:)?[[:blank:]]*([a-zA-Z0-9\/.]+)[[:blank:]]+\*\(([[:digit:]]+-[[:digit:]]+-[[:digit:]]+)"
+  # https://regex101.com/r/67rzeb/6
+  local changelog_h1_re="#[[:blank:]]+([a-zA-Z0-9 !%&*()-+]+:)?[[:blank:]]*([a-zA-Z0-9\/.]+)[[:blank:]]+[*_]\(([[:digit:]]+-[[:digit:]]+-[[:digit:]]+)"
 
   while read -r line; do
     if ! [[ "$line" =~ $changelog_h1_re ]]; then
@@ -60,8 +60,8 @@ parse_changelog_tags() {
       continue
     fi
 
-    tag="${BASH_REMATCH[1]}"
-    date="${BASH_REMATCH[2]}"
+    tag="${BASH_REMATCH[2]}"
+    date="${BASH_REMATCH[3]}"
 
     if [ ! "${newest_date:-}" ]; then
       # want to push tags for the newest release only
@@ -90,18 +90,18 @@ validate_tags() {
   local tags=("$@")
 
   if [ ${#tags[@]} == 0 ]; then
-    fatal "no tags found"
+    fatal $LINENO "no tags found"
   fi
 
   for tag in "${tags[@]}"; do
-    echo "$tag"
-    if git rev-parse --verify "$tag" >/dev/null; then
-      fatal "tag already exists: $tag"
+    if git rev-parse --verify "$tag" >/dev/null 2>&1; then
+      fatal $LINENO "tag already exists: $tag"
     fi
   done
 }
 
 # Description: Creates and pushes git tags
+# Globals    : DRY_RUN (set to echo to dry run)
 # Args       : words separated by spaces
 # STDOUT     : Prints each tag created, plus git output
 # STDERR     : Git might output
@@ -110,10 +110,10 @@ validate_tags() {
 tag_and_push() {
   for tag in "$@"; do
     msgln "$tag"
-    git tag "$tag" HEAD
+    $DRY_RUN git tag "$tag" HEAD
   done
 
-  git push origin --tags
+  $DRY_RUN git push origin --tags
 }
 
 ##############
