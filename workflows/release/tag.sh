@@ -101,13 +101,19 @@ validate_tags() {
 }
 
 # Description: Creates and pushes git tags
-# Globals    : DRY_RUN (set to echo to dry run)
+# Globals    : DRY_RUN bool
 # Args       : words separated by spaces
 # STDOUT     : Prints each tag created, plus git output
 # STDERR     : Git might output
 # Sideeffects: Pushes git tags
 # Example    : tag_and_push foo/v1.1.1. bar/v1.2.3
 tag_and_push() {
+  if [ "${DRY_RUN:-}" == "true" ]; then
+    DRY_RUN="echo"
+  else
+    DRY_RUN=""
+  fi
+
   for tag in "$@"; do
     msgln "$tag"
     $DRY_RUN git tag "$tag" HEAD
