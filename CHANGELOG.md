@@ -1,3 +1,22 @@
+# go 1 23: v0.2.0 *(2024-09-04)*
+
+### PRs in this release: [#7](https://github.com/tcodes0/sh/pull/7), [#6](https://github.com/tcodes0/sh/pull/6)
+### [Diff with v0.1.0](https://github.com/tcodes0/sh/compare/v0.2.0..v0.1.0)
+
+## Breaking changes
+- **go**: update workflows to go 1.23 ([ee261e98](https://github.com/tcodes0/sh/commit/ee261e9832ba397a498ea2e8db40ba7a7f2211e2))
+
+## Bug Fixes
+- **workflows**: remove local setup go step ([ee261e98](https://github.com/tcodes0/sh/commit/ee261e9832ba397a498ea2e8db40ba7a7f2211e2))
+- **workflows/release**: correct regex, add missing line numbers ([5585e577](https://github.com/tcodes0/sh/commit/5585e57713f895233a40de118c19073446c81cec))
+- **workflows/release**: parse * and _ in markdown h1, correct release title ([5585e577](https://github.com/tcodes0/sh/commit/5585e57713f895233a40de118c19073446c81cec))
+
+## Documentation
+- document global DRY_RUN var better ([5585e577](https://github.com/tcodes0/sh/commit/5585e57713f895233a40de118c19073446c81cec))
+
+#### Other
+- update regex link ([5585e577](https://github.com/tcodes0/sh/commit/5585e57713f895233a40de118c19073446c81cec))
+
 # Initial Release: v0.1.0 _(2024-08-30)_
 
 ## Features
