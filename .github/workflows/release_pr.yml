@@ -43,6 +43,7 @@ jobs:
         env:
           CHANGELOG_FILE: CHANGELOG.md
           BASH_ENV: ./lib.sh
+          TAGS_FILE: tags.txt
         run: ./workflows/release/changelog.sh "${{ inputs.url }}" "${{ inputs.title }}" "${{ inputs.tag_prefix }}"
 
       - name: Open PR
