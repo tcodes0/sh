@@ -17,8 +17,7 @@ trap 'err $LINENO' ERR
 # Description: Exit the script if main head is doesn't match a release commit
 # Globals    : CHANGELOG_FILE, TAGS_FILE, DRY_RUN (github workflow)
 # STDERR     : Logs
-# Returns    : 1 if fail
-# Sideeffects: Might exit the script with success
+# Sideeffects: Might exit the script with success or failure
 # Example    : validate
 validate() {
   local main_head release_re="^chore:[[:blank:]]+release"
@@ -30,13 +29,11 @@ validate() {
   fi
 
   if [ ! "${CHANGELOG_FILE:-}" ]; then
-    err $LINENO "missing CHANGELOG_FILE env variable"
-    return 1
+    fatal $LINENO "missing CHANGELOG_FILE env variable"
   fi
 
   if [ ! "${TAGS_FILE:-}" ]; then
-    err $LINENO "missing TAGS_FILE env variable"
-    return 1
+    fatal $LINENO "missing TAGS_FILE env variable"
   fi
 
   while read -r commit_line; do
