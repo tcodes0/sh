@@ -34,7 +34,7 @@ validate() {
 }
 
 # Description: Calls changelog tool and updates CHANGELOG_FILE
-# Globals    : CHANGELOG_FILE (github workflow or .env)
+# Globals    : CHANGELOG_FILE, TAGS_FILE (github workflow or .env)
 # Args       : 1=url 2=title 3=prefix
 # STDERR     : Might print errors
 # Returns    : 1 if fail
@@ -47,6 +47,7 @@ update_changelog() {
   flags+=(-title "$title")
   flags+=(-tagprefix "$prefix")
   flags+=(-url "$url")
+  flags+=(-tagsfile "${TAGS_FILE:-}")
 
   changes=$(changelog "${flags[@]}")
   if [ ! "$changes" ]; then
