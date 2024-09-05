@@ -41,7 +41,8 @@ validate() {
     # meant to only run once
     # fix for SIGPIPE errors arrising from piping git log into head -1
     break
-  done < <(git log --oneline --decorate)
+    # format: just commit body
+  done < <(git log --pretty=format:%B)
 
   if ! [[ $main_head =~ $release_re ]]; then
     log $LINENO "main head not a release commit: $main_head"
