@@ -1,2 +1,2 @@
 # this file is generated to aid in automating releases
-v0.2.1
+v0.2.2
