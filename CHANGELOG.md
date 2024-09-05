@@ -1,3 +1,17 @@
+# workflow updates: v0.2.1 *(2024-09-05)*
+### [Diff with v0.2.0](https://github.com/tcodes0/sh/compare/v0.2.1..v0.2.0)
+
+### PRs in this release: [#9](https://github.com/tcodes0/sh/pull/9)
+## Features
+- **workflows/release**: add TAGS_FILE global ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
+
+## Bug Fixes
+- **workflows/release**: correct chagelog flag name ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
+- **workflows/release**: correct unset env DRY_RUN ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
+
+#### Other
+- add tags.txt ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
+
 # go 1 23: v0.2.0 *(2024-09-04)*
 
 ### PRs in this release: [#7](https://github.com/tcodes0/sh/pull/7), [#6](https://github.com/tcodes0/sh/pull/6)
