@@ -35,17 +35,17 @@ validate() {
 
 # Description: Calls changelog tool and updates CHANGELOG_FILE
 # Globals    : CHANGELOG_FILE, TAGS_FILE (github workflow or .env)
-# Args       : 1=url 2=title 3=prefix
+# Args       : 1=url 2=title 3=prefixes
 # STDERR     : Might print errors
 # Returns    : 1 if fail
 # Sideeffects: Updates CHANGELOG_FILE
 # Example    : update_changelog pizza
 update_changelog() {
-  local url=$1 title=${2:-} prefix=${3:-} changes changelog flags=()
+  local url=$1 title=${2:-} prefixes=${3:-} changes changelog flags=()
 
   changelog=$(cat "$CHANGELOG_FILE")
   flags+=(-title "$title")
-  flags+=(-tagprefixes "$prefix")
+  flags+=(-tagprefixes "$prefixes")
   flags+=(-url "$url")
   flags+=(-tagsfile "${TAGS_FILE:-}")
 
@@ -56,6 +56,7 @@ update_changelog() {
   fi
 
   printf %s "$changes" >"$CHANGELOG_FILE"
+  printf %s "\n\n" >>"$CHANGELOG_FILE"
   printf %s "$changelog" >>"$CHANGELOG_FILE"
 }
 
