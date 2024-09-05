@@ -1,3 +1,10 @@
+# Fix tag.sh log parsing: v0.2.3 *(2024-09-05)*
+### [Diff with v0.2.2](https://github.com/tcodes0/sh/compare/v0.2.3..v0.2.2)
+
+### PRs in this release: [#14](https://github.com/tcodes0/sh/pull/14)
+## Bug Fixes
+- **workflows/release**: correct log parse in tag.sh ([93621825](https://github.com/tcodes0/sh/commit/93621825911e407321537729ea2351a3b694b3ff))
+
 # Improve tag.sh: v0.2.2 *(2024-09-05)*
 ### [Diff with v0.2.1](https://github.com/tcodes0/sh/compare/v0.2.2..v0.2.1)
 
