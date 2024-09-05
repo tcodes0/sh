@@ -6,7 +6,7 @@
 - **workflows/release**: add TAGS_FILE global ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
 
 ## Bug Fixes
-- **workflows/release**: correct chagelog flag name ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
+- **workflows/release**: correct changelog flag name ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
 - **workflows/release**: correct unset env DRY_RUN ([17354579](https://github.com/tcodes0/sh/commit/173545795d19b008e92347ff56ea24a68d4540da))
 
 #### Other
