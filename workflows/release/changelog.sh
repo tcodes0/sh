@@ -16,15 +16,13 @@ trap 'err $LINENO' ERR
 ##########################
 
 # Description: Validates user input
-# Globals    : CHANGELOG_FILE (github workflow or .env)
+# Globals    : CHANGELOG_FILE (github workflow)
 # Returns    : 1 if fail
 # Example    : validate
 validate() {
   if [ ! "${CHANGELOG_FILE-}" ]; then
-    if ! source .env; then
-      err $LINENO "missing CHANGELOG_FILE env variable"
-      return 1
-    fi
+    err $LINENO "missing CHANGELOG_FILE env variable"
+    return 1
   fi
 
   if [ ! -f "$CHANGELOG_FILE" ]; then
@@ -34,7 +32,7 @@ validate() {
 }
 
 # Description: Calls changelog tool and updates CHANGELOG_FILE
-# Globals    : CHANGELOG_FILE, TAGS_FILE (github workflow or .env)
+# Globals    : CHANGELOG_FILE, TAGS_FILE (github workflow)
 # Args       : 1=url 2=title 3=prefixes
 # STDERR     : Might print errors
 # Returns    : 1 if fail
