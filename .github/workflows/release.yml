@@ -23,4 +23,5 @@ jobs:
           CHANGELOG_FILE: CHANGELOG.md
           BASH_ENV: ./lib.sh
           DRY_RUN: false
+          TAGS_FILE: tags.txt
         run: ./workflows/release/tag.sh

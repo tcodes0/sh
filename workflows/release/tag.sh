@@ -15,19 +15,25 @@ trap 'err $LINENO' ERR
 ##########################
 
 # Description: Exit the script if main head is doesn't match a release commit
-# Globals    : CHANGELOG_FILE (github workflow or .env)
+# Globals    : CHANGELOG_FILE, TAGS_FILE, DRY_RUN (github workflow)
 # STDERR     : Logs
-# Returns    : 1 if fail
-# Sideeffects: Might exit the script with success
+# Sideeffects: Might exit the script with success or failure
 # Example    : validate
 validate() {
-  local main_head release_re="chore:[[:blank:]]+release"
+  local main_head release_re="^chore:[[:blank:]]+release"
 
-  if [ ! "${CHANGELOG_FILE-}" ]; then
-    if ! source .env; then
-      err $LINENO "missing CHANGELOG_FILE env variable"
-      return 1
-    fi
+  if [ "${DRY_RUN:-}" == "true" ]; then
+    DRY_RUN="echo"
+  else
+    DRY_RUN=""
+  fi
+
+  if [ ! "${CHANGELOG_FILE:-}" ]; then
+    fatal $LINENO "missing CHANGELOG_FILE env variable"
+  fi
+
+  if [ ! "${TAGS_FILE:-}" ]; then
+    fatal $LINENO "missing TAGS_FILE env variable"
   fi
 
   while read -r commit_line; do
@@ -43,39 +49,22 @@ validate() {
   fi
 }
 
-# Description: Parses tags from changelog
-# Globals    : CHANGELOG_FILE (github workflow or .env)
+# Description: Parses tags from TAGS_FILE
+# Globals    : TAGS_FILE (github workflow)
 # STDOUT     : Parsed tags
 # Returns    : Parsed tags
-# Example    : tags="$(parse_changelog_tags)"
-parse_changelog_tags() {
-  local tags=() newest_date tag date
-  # https://regex101.com/r/67rzeb/6
-  local changelog_h1_re="#[[:blank:]]+([a-zA-Z0-9 !%&*()-+]+:)?[[:blank:]]*([a-zA-Z0-9\/.]+)[[:blank:]]+[*_]\(([[:digit:]]+-[[:digit:]]+-[[:digit:]]+)"
+# Example    : tags="$(parse_tags)"
+parse_tags() {
+  local tags=() line
 
   while read -r line; do
-    if ! [[ "$line" =~ $changelog_h1_re ]]; then
-      # want only release lines, h1 in md
-      # one or more lines with tags
+    if [[ "$line" =~ ^# ]]; then
+      # skip doc lines
       continue
     fi
 
-    tag="${BASH_REMATCH[2]}"
-    date="${BASH_REMATCH[3]}"
-
-    if [ ! "${newest_date:-}" ]; then
-      # want to push tags for the newest release only
-      # which will be in the top of the changelog
-      newest_date=$date
-    fi
-
-    if [ "$date" != "$newest_date" ]; then
-      # newest release is over
-      break
-    fi
-
-    tags+=("$tag")
-  done <"$CHANGELOG_FILE"
+    tags+=("$line")
+  done <"$TAGS_FILE"
 
   printf %s "${tags[*]}"
 }
@@ -101,19 +90,13 @@ validate_tags() {
 }
 
 # Description: Creates and pushes git tags
-# Globals    : DRY_RUN bool
+# Globals    : DRY_RUN (github workflow)
 # Args       : words separated by spaces
 # STDOUT     : Prints each tag created, plus git output
 # STDERR     : Git might output
 # Sideeffects: Pushes git tags
-# Example    : tag_and_push foo/v1.1.1. bar/v1.2.3
+# Example    : tag_and_push v1.1.1. foo/v1.2.3
 tag_and_push() {
-  if [ "${DRY_RUN:-}" == "true" ]; then
-    DRY_RUN="echo"
-  else
-    DRY_RUN=""
-  fi
-
   for tag in "$@"; do
     msgln "$tag"
     $DRY_RUN git tag "$tag" HEAD
@@ -126,9 +109,15 @@ tag_and_push() {
 ### script ###
 ##############
 
+if [ ! "${LIB_LOADED:-}" ]; then
+  echo -e "INFO  ($0:$LINENO) BASH_ENV=${BASH_ENV:-}" >&2
+  echo -e "FATAL ($0:$LINENO) lib.sh not found. use 'export BASH_ENV=<lib.sh location>' or 'BASH_ENV=<lib.sh location> $0'" >&2
+  exit 1
+fi
+
 validate
 
-parsed_tags="$(parse_changelog_tags)"
+parsed_tags="$(parse_tags)"
 # shellcheck disable=SC2068 # intentional splitting
 validate_tags ${parsed_tags[@]}
 # shellcheck disable=SC2068 # intentional splitting
