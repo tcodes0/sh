@@ -62,5 +62,11 @@ update_changelog() {
 ### script ###
 ##############
 
+if [ ! "${LIB_LOADED:-}" ]; then
+  echo -e "INFO  ($0:$LINENO) BASH_ENV=${BASH_ENV:-}" >&2
+  echo -e "FATAL ($0:$LINENO) lib.sh not found. use 'export BASH_ENV=<lib.sh location>' or 'BASH_ENV=<lib.sh location> $0'" >&2
+  exit 1
+fi
+
 validate
 update_changelog "$@"
