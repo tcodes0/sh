@@ -1,3 +1,21 @@
+# Improve tag.sh: v0.2.2 *(2024-09-05)*
+### [Diff with v0.2.1](https://github.com/tcodes0/sh/compare/v0.2.2..v0.2.1)
+
+### PRs in this release: [#12](https://github.com/tcodes0/sh/pull/12)
+## Features
+- add LIB_LOADED checks and errors ([1e45aba1](https://github.com/tcodes0/sh/commit/1e45aba1808789d3245179a4b846ef2fcd5eb9cf))
+
+## Bug Fixes
+- **workflows/release**: add TAGS_FILE env ([3de7e530](https://github.com/tcodes0/sh/commit/3de7e53084665e87e55a4e616e69ca1deba0e554))
+
+## Improvements
+- **workflows/release**: update tag.sh to work with TAGS_FILE ([7b4472bf](https://github.com/tcodes0/sh/commit/7b4472bfe3775a54341d36be7aafb53201abfc04))
+- remove .env local sourcing to avoid confusion ([9a44f2c9](https://github.com/tcodes0/sh/commit/9a44f2c99f090e392a8fab74317a224d0aece578))
+
+#### Other
+- vscode settings, empty .env-default ([67651938](https://github.com/tcodes0/sh/commit/6765193816b83c730f1dfdbf28c5a45b2733cac9))
+- use fatal instead of exit 1 ([025f6829](https://github.com/tcodes0/sh/commit/025f682921aa0dda0946cb85741be9d3370d4d29))
+
 # workflow updates: v0.2.1 *(2024-09-05)*
 ### [Diff with v0.2.0](https://github.com/tcodes0/sh/compare/v0.2.1..v0.2.0)
 
