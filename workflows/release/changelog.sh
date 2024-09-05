@@ -56,7 +56,7 @@ update_changelog() {
   fi
 
   printf %s "$changes" >"$CHANGELOG_FILE"
-  printf %s "\n\n" >>"$CHANGELOG_FILE"
+  printf "\n\n" >>"$CHANGELOG_FILE"
   printf %s "$changelog" >>"$CHANGELOG_FILE"
 }
 
