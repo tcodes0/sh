@@ -45,7 +45,7 @@ update_changelog() {
 
   changelog=$(cat "$CHANGELOG_FILE")
   flags+=(-title "$title")
-  flags+=(-tagprefix "$prefix")
+  flags+=(-tagprefixes "$prefix")
   flags+=(-url "$url")
   flags+=(-tagsfile "${TAGS_FILE:-}")
 
