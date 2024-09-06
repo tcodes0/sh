@@ -5,14 +5,14 @@ on:
   workflow_dispatch:
     inputs:
       url:
-        description: Github repository URL to point commit links at
+        description: Github repository URL to point links at, prefixed 'https://github.com/'
         required: true
         type: string
       title:
         description: Release title; new version and date will be added
         type: string
-      tag_prefix:
-        description: Prefix to be concatenated to semver tag, i.e ${PREFIX}v1.0.0
+      tag_prefixes:
+        description: Comma separated prefixes to find tags, i.e $PREFIXv1.0.0
         type: string
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
           BASH_ENV: ./lib.sh
           TAGS_FILE: tags.txt
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./workflows/release/changelog.sh "${{ inputs.url }}" "${{ inputs.title }}" "${{ inputs.tag_prefix }}"
+        run: ./workflows/release/changelog.sh "${{ inputs.url }}" "${{ inputs.title }}" "${{ inputs.tag_prefixes }}"
 
       - name: Open PR
         uses: peter-evans/create-pull-request@v6.1.0

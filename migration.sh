@@ -31,14 +31,12 @@ validate() {
   local name=${1-}
 
   if [ ! "${MIGRATIONS_DIR:-}" ]; then
-    err $LINENO "missing MIGRATIONS_DIR env variable"
-    return 1
+    fatal $LINENO "missing MIGRATIONS_DIR env variable"
   fi
 
   if [ ! "$name" ]; then
-    err $LINENO "missing migration name"
     usage
-    return 1
+    fatal $LINENO "missing migration name"
   fi
 }
 
