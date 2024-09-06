@@ -1,3 +1,10 @@
+# Workflows/unpin changelog version: v0.2.4 *(2024-09-06)*
+### [Diff with v0.2.3](https://github.com/tcodes0/sh/compare/v0.2.4..v0.2.3)
+
+### PRs in this release: [#16](https://github.com/tcodes0/sh/pull/16)
+#### Other
+- **workflows**: unpin changelog version ([6305d2dd](https://github.com/tcodes0/sh/commit/6305d2ddd50955f6c9aa3b6a657a1b98b95b033d))
+
 # Fix tag.sh log parsing: v0.2.3 *(2024-09-05)*
 ### [Diff with v0.2.2](https://github.com/tcodes0/sh/compare/v0.2.3..v0.2.2)
 
