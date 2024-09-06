@@ -24,4 +24,5 @@ jobs:
           BASH_ENV: ./lib.sh
           DRY_RUN: false
           TAGS_FILE: tags.txt
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./workflows/release/tag.sh

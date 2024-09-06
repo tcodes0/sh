@@ -36,7 +36,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 1.23
-      - run: go install github.com/tcodes0/go/cmd/changelog
+      - run: go install github.com/tcodes0/go/cmd/changelog@latest
 
       - name: Update changelog
         shell: bash
@@ -44,6 +44,7 @@ jobs:
           CHANGELOG_FILE: CHANGELOG.md
           BASH_ENV: ./lib.sh
           TAGS_FILE: tags.txt
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./workflows/release/changelog.sh "${{ inputs.url }}" "${{ inputs.title }}" "${{ inputs.tag_prefix }}"
 
       - name: Open PR

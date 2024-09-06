@@ -7,7 +7,7 @@
 # calls git diff and exists if there are changes
 
 set -euo pipefail
-shopt -s globstar
+shopt -s globstar nullglob
 trap 'err $LINENO' ERR
 
 ##############

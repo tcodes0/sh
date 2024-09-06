@@ -8,7 +8,7 @@
 # Args: 1=url 2=title 3=prefix
 
 set -euo pipefail
-shopt -s globstar
+shopt -s globstar nullglob
 trap 'err $LINENO' ERR
 
 ##########################
