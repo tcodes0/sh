@@ -16,6 +16,24 @@ trap 'err $LINENO' ERR
 
 CONVENTIONAL_COMMITS_URL="See https://www.conventionalcommits.org/en/v1.0.0/"
 
+# Description: Validates user input
+# Globals    : BASE_REF (github workflow)
+# Sideeffects: Might exit the script with an error, might mutate BASE_REF
+# Example    : validate_input "$@"
+validate() {
+  if [ ! "${BASE_REF:-}" ]; then
+    BASE_REF=main
+  fi
+
+  if ! command -v commitlint >/dev/null; then
+    fatal $LINENO "commitlint not found"
+  fi
+
+  if ! command -v cspell >/dev/null; then
+    fatal $LINENO "cspell not found"
+  fi
+}
+
 # Description: Parses a git log and checks if the commits are conventional
 # Globals    : CONFIG_PATH (lib.sh)
 # Args       : 1=git log
@@ -35,20 +53,6 @@ lint_commits() {
   printf %s "${problems[*]}"
 }
 
-# Description: Validates user input
-# Globals    : BASE_REF, VERSION (github workflow)
-# Sideeffects: Might install commitlint, might mutate BASE_REF
-# Example    : validate_input "$@"
-validate() {
-  if [ ! "${BASE_REF:-}" ]; then
-    BASE_REF=main
-  fi
-
-  if ! command -v commitlint >/dev/null; then
-    npm install --global @commitlint/cli@"$VERSION" >/dev/null
-  fi
-}
-
 # Description: Check if PR title is a conventional commit
 # Globals    : PR_TITLE (github workflow), CONFIG_PATH (lib.sh), CONVENTIONAL_COMMITS_URL (script)
 # STDOUT     : Messages
@@ -63,9 +67,7 @@ lint_title() {
   log $LINENO "$PR_TITLE"
 
   if ! commitlint --config="$CONFIG_PATH" <<<"$PR_TITLE"; then
-    err $LINENO "PR title must be a conventional commit, got: $PR_TITLE"
-    err $LINENO "$CONVENTIONAL_COMMITS_URL"
-    return 1
+    fatal $LINENO "PR title must be a conventional commit, got: $PR_TITLE. See $CONVENTIONAL_COMMITS_URL"
   fi
 
   msgln PR title ok
@@ -73,16 +75,15 @@ lint_title() {
 
 # Description: Check if commit messages are conventional commits
 # Globals    : BASE_REF (github workflow), CONVENTIONAL_COMMITS_URL (script)
-# STDOUT     : Diagnostic report
+# Args       : 1=git log
+# STDOUT     : Ok message
 # STDERR     : Might print errors and logs
-# Returns    : 1 if fail
-# Example    : lint_log
+# Sideeffects: Might exit the script with an error
+# Example    : lint_log "$git_log"
 lint_log() {
-  local revision=refs/remotes/origin/"$BASE_REF"..HEAD total_commits bad_commits git_log issues
+  local revision="refs/remotes/origin/${BASE_REF}..HEAD" total_commits bad_commits git_log="$1" issues
 
   log $LINENO git log "$revision"
-
-  git_log=$(git log --format=%s "$revision" --)
 
   if [ ! "$git_log" ]; then
     log $LINENO empty git log
@@ -94,28 +95,52 @@ lint_log() {
   issues=$(lint_commits "$git_log")
 
   if [ ! "$issues" ]; then
-    msgln "commits ok"
+    msgln "conventional commits ok"
     return
   fi
 
   total_commits=$(wc -l <<<"$git_log")
   bad_commits=$(grep -Eie input -c <<<"$issues")
 
-  command cat <<-EOF
+  fatal $LINENO "
 commits:
-"$git_log"
+$git_log
 
 linter\ output:
 
-"$issues"
+$issues
 
-"Commit messages not formatted properly: $bad_commits out of $total_commits commits"
-"$CONVENTIONAL_COMMITS_URL"
-"To fix all, try 'git rebase -i $revision', change bad commits to 'reword', fix messages and 'git push --force'"
-EOF
+Commit messages not formatted properly: $bad_commits out of $total_commits commits
+$CONVENTIONAL_COMMITS_URL
+To fix all, try 'git rebase -i $revision', change bad commits to 'reword', fix messages and 'git push --force'
+"
+}
 
-  return 1
+# Description: Check if commit messages are spelled properly
+# Args       : 1=git log
+# STDOUT     : Ok message
+# STDERR     : Might print errors and logs
+# Sideeffects: Might exit the script with an error
+# Example    : spellcheck_log "$git_log"
+spellcheck_log() {
+  # shellcheck disable=SC2155
+  local log="$1" issues=$(cspell stdin <<<"$git_log")
 
+  if [ ! "$issues" ]; then
+    msgln "spellcheck commits ok"
+    return
+  fi
+
+  fatal $LINENO "
+commits:
+$git_log
+
+linter\ output:
+
+$issues
+
+To fix all, try 'git rebase -i $revision', change bad commits to 'reword', fix messages and 'git push --force'
+"
 }
 
 ##############
@@ -130,4 +155,8 @@ fi
 
 validate
 lint_title
-lint_log
+
+git_log=$(git log --format=%s "$revision" --)
+
+lint_log "$git_log"
+spellcheck_log "$git_log"

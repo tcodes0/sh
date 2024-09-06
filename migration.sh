@@ -22,7 +22,7 @@ EOF
 }
 
 # Description: Validates user input
-# Globals    : MIGRATIONS_DIR (github workflow)
+# Globals    : MIGRATIONS_DIR (github workflow or .env)
 # Args       : $@
 # STDERR     : Might print errors
 # Returns    : 1 if fail
@@ -43,7 +43,7 @@ validate() {
 }
 
 # Description: Create a new timestamped migration file
-# Globals    : MIGRATIONS_DIR (github workflow)
+# Globals    : MIGRATIONS_DIR (github workflow or .env)
 # Args       : 1=(up | down) 2=name
 # STDOUT     : Path to the new file
 # Sideeffects: Creates a new file
