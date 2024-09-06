@@ -1,3 +1,13 @@
+# nullglob: v0.2.5 *(2024-09-06)*
+### [Diff with v0.2.4](https://github.com/tcodes0/sh/compare/v0.2.5..v0.2.4)
+
+### PRs in this release: [#18](https://github.com/tcodes0/sh/pull/18)
+## Features
+- add nullglob opt everywhere ([8fda1a85](https://github.com/tcodes0/sh/commit/8fda1a852d16c39f156a906e119e8d1dd94d85f0))
+
+## Bug Fixes
+- **workflows**: pass GITHUB_TOKEN ([b85346c7](https://github.com/tcodes0/sh/commit/b85346c7b6e51c151eada0b2c1da854168d829b7))
+
 # Workflows/unpin changelog version: v0.2.4 *(2024-09-06)*
 ### [Diff with v0.2.3](https://github.com/tcodes0/sh/compare/v0.2.4..v0.2.3)
 
