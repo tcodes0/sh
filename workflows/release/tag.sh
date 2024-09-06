@@ -7,7 +7,7 @@
 # parses changelog and pushes tags the newest release
 
 set -euo pipefail
-shopt -s globstar
+shopt -s globstar nullglob
 trap 'err $LINENO' ERR
 
 ##########################

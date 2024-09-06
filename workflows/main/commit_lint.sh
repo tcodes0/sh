@@ -7,7 +7,7 @@
 # check that commit messages and PR title are conventional commits
 
 set -euo pipefail
-shopt -s globstar
+shopt -s globstar nullglob
 trap 'err $LINENO' ERR
 
 ##########################

@@ -7,7 +7,7 @@
 # template for bash scripts
 
 set -euo pipefail
-shopt -s globstar
+shopt -s globstar nullglob
 trap 'err $LINENO' ERR
 
 ##########################
