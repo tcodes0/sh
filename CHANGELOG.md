@@ -1,3 +1,22 @@
+# spellcheck and updates: v0.2.6 *(2024-09-08)*
+### [Diff with v0.2.5](github.com/tcodes0/sh/compare/v0.2.6..v0.2.5)
+
+### PRs in this release: [#20](github.com/tcodes0/sh/pull/20)
+## Features
+- **workflows**: spellcheck commit messages ([84549583](github.com/tcodes0/sh/commit/84549583ff01eeae504a30a82c3cd9e4c3576042))
+
+## Bug Fixes
+- **workflows**: missing vars ([84549583](github.com/tcodes0/sh/commit/84549583ff01eeae504a30a82c3cd9e4c3576042))
+- **workflows**: set write permission on release ([84549583](github.com/tcodes0/sh/commit/84549583ff01eeae504a30a82c3cd9e4c3576042))
+
+## Documentation
+- scripts ([84549583](github.com/tcodes0/sh/commit/84549583ff01eeae504a30a82c3cd9e4c3576042))
+
+#### Other
+- **workflows**: bump actions ([84549583](github.com/tcodes0/sh/commit/84549583ff01eeae504a30a82c3cd9e4c3576042))
+- update workflow docs ([84549583](github.com/tcodes0/sh/commit/84549583ff01eeae504a30a82c3cd9e4c3576042))
+- rename cspell.config to .cspell.config ([84549583](github.com/tcodes0/sh/commit/84549583ff01eeae504a30a82c3cd9e4c3576042))
+
 # nullglob: v0.2.5 *(2024-09-06)*
 ### [Diff with v0.2.4](https://github.com/tcodes0/sh/compare/v0.2.5..v0.2.4)
 
