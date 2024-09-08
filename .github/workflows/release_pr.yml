@@ -12,7 +12,7 @@ on:
         description: Release title; new version and date will be added
         type: string
       tag_prefixes:
-        description: Comma separated prefixes to find tags, i.e $PREFIXv1.0.0
+        description: Comma separated prefixes to find tags, i.e ${PREFIX}v1.0.0
         type: string
 
 jobs:

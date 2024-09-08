@@ -35,7 +35,7 @@ validate() {
 }
 
 # Description: Parses a git log and checks if the commits are conventional
-# Globals    : COMMITLINT_CONFIG_PATH (lib.sh)
+# Globals    : COMMITLINT_CONFIG_PATH (github workflow)
 # Args       : 1=git log
 # STDOUT     : Problems found
 # Example    : lint_commits "$log"
@@ -54,7 +54,7 @@ lint_commits() {
 }
 
 # Description: Check if PR title is a conventional commit
-# Globals    : PR_TITLE (github workflow), COMMITLINT_CONFIG_PATH (lib.sh), CONVENTIONAL_COMMITS_URL (script)
+# Globals    : PR_TITLE, COMMITLINT_CONFIG_PATH (github workflow), CONVENTIONAL_COMMITS_URL (script)
 # STDOUT     : Messages
 # STDERR     : Might print errors and logs
 # Returns    : 1 if fail
