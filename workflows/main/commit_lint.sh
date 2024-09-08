@@ -117,7 +117,7 @@ To fix all, try 'git rebase -i $revision', change bad commits to 'reword', fix m
 }
 
 # Description: Check if commit messages are spelled properly
-# Globals    : CSPELL_CONFIG_PATH (github workflow)
+# Globals    : CSPELL_CONFIG_PATH, BASE_REF (github workflow)
 # Args       : 1=git log
 # STDOUT     : Ok message
 # STDERR     : Might print errors and logs
@@ -126,6 +126,7 @@ To fix all, try 'git rebase -i $revision', change bad commits to 'reword', fix m
 spellcheck_log() {
   # shellcheck disable=SC2155
   local log="$1" issues=$(cspell --config="$CSPELL_CONFIG_PATH" stdin <<<"$git_log")
+  local revision="refs/remotes/origin/${BASE_REF}..HEAD"
 
   if [ ! "$issues" ]; then
     msgln "spellcheck commits ok"
@@ -157,7 +158,7 @@ fi
 validate
 lint_title
 
-git_log=$(git log --format=%s "$revision" --)
+git_log=$(git log --format=%s "refs/remotes/origin/${BASE_REF}..HEAD" --)
 
 lint_log "$git_log"
 spellcheck_log "$git_log"
