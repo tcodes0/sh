@@ -22,7 +22,7 @@ EOF
 }
 
 # Description: Validates user input
-# Globals    : MIGRATIONS_DIR (github workflow)
+# Globals    : MIGRATIONS_DIR (github workflow or .env)
 # Args       : $@
 # STDERR     : Might print errors
 # Returns    : 1 if fail
@@ -31,19 +31,17 @@ validate() {
   local name=${1-}
 
   if [ ! "${MIGRATIONS_DIR:-}" ]; then
-    err $LINENO "missing MIGRATIONS_DIR env variable"
-    return 1
+    fatal $LINENO "missing MIGRATIONS_DIR env variable"
   fi
 
   if [ ! "$name" ]; then
-    err $LINENO "missing migration name"
     usage
-    return 1
+    fatal $LINENO "missing migration name"
   fi
 }
 
 # Description: Create a new timestamped migration file
-# Globals    : MIGRATIONS_DIR (github workflow)
+# Globals    : MIGRATIONS_DIR (github workflow or .env)
 # Args       : 1=(up | down) 2=name
 # STDOUT     : Path to the new file
 # Sideeffects: Creates a new file
