@@ -35,7 +35,7 @@ validate() {
 }
 
 # Description: Parses a git log and checks if the commits are conventional
-# Globals    : CONFIG_PATH (lib.sh)
+# Globals    : COMMITLINT_CONFIG_PATH (lib.sh)
 # Args       : 1=git log
 # STDOUT     : Problems found
 # Example    : lint_commits "$log"
@@ -43,7 +43,7 @@ lint_commits() {
   local log="$1" problems="" out
 
   while read -r commit; do
-    out="$(commitlint --config="$CONFIG_PATH" <<<"$commit" || true)"
+    out="$(commitlint --config="$COMMITLINT_CONFIG_PATH" <<<"$commit" || true)"
 
     if [ "$out" ]; then
       problems+=("$out")
@@ -54,7 +54,7 @@ lint_commits() {
 }
 
 # Description: Check if PR title is a conventional commit
-# Globals    : PR_TITLE (github workflow), CONFIG_PATH (lib.sh), CONVENTIONAL_COMMITS_URL (script)
+# Globals    : PR_TITLE (github workflow), COMMITLINT_CONFIG_PATH (lib.sh), CONVENTIONAL_COMMITS_URL (script)
 # STDOUT     : Messages
 # STDERR     : Might print errors and logs
 # Returns    : 1 if fail
@@ -66,7 +66,7 @@ lint_title() {
 
   log $LINENO "$PR_TITLE"
 
-  if ! commitlint --config="$CONFIG_PATH" <<<"$PR_TITLE"; then
+  if ! commitlint --config="$COMMITLINT_CONFIG_PATH" <<<"$PR_TITLE"; then
     fatal $LINENO "PR title must be a conventional commit, got: $PR_TITLE. See $CONVENTIONAL_COMMITS_URL"
   fi
 
@@ -117,6 +117,7 @@ To fix all, try 'git rebase -i $revision', change bad commits to 'reword', fix m
 }
 
 # Description: Check if commit messages are spelled properly
+# Globals    : CSPELL_CONFIG_PATH (github workflow)
 # Args       : 1=git log
 # STDOUT     : Ok message
 # STDERR     : Might print errors and logs
@@ -124,7 +125,7 @@ To fix all, try 'git rebase -i $revision', change bad commits to 'reword', fix m
 # Example    : spellcheck_log "$git_log"
 spellcheck_log() {
   # shellcheck disable=SC2155
-  local log="$1" issues=$(cspell stdin <<<"$git_log")
+  local log="$1" issues=$(cspell --config="$CSPELL_CONFIG_PATH" stdin <<<"$git_log")
 
   if [ ! "$issues" ]; then
     msgln "spellcheck commits ok"

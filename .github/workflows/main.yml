@@ -68,7 +68,7 @@ jobs:
       - name: Lint commits with commitlint and spellcheck
         env:
           COMMITLINT_CONFIG_PATH: .commitlintrc.yml
-          CSPELL_CONFIG_PATH: cspell.config.yml
+          CSPELL_CONFIG_PATH: .cspell.config.yml
           # will not be set when running on push/merge to main
           BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: ./workflows/main/commit_lint.sh
@@ -124,4 +124,4 @@ jobs:
         with:
           files: "."
           incremental_files_only: true
-          config: ./cspell.config.yml
+          config: ./.cspell.config.yml
