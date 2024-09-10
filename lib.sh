@@ -16,8 +16,10 @@
 export LIB_LOADED=true
 
 # ANSI escape codes for specific colors
-export LIB_COLOR_PASS="\e[7;38;05;242m PASS \e[0m"
-export LIB_COLOR_FAIL="\e[2;7;38;05;197;47m FAIL \e[0m"
+export LIB_COLOR_PASS="\e[7;38;05;242m PASS \e[0m" # deprecated in favor of LIB_GREEN_PASS
+export LIB_COLOR_FAIL="\e[2;7;38;05;197;47m FAIL \e[0m" # deprecated in favor of LIB_RED_FAIL
+export LIB_GREEN_PASS="\e[7;38;05;242m PASS \e[0m"
+export LIB_RED_FAIL="\e[2;7;38;05;197;47m FAIL \e[0m"
 
 # ANSI escape codes for visual formatting
 export LIB_VISUAL_END="\e[0m"
