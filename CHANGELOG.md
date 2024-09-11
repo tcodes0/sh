@@ -1,3 +1,21 @@
+# lib styling: v0.2.7 *(2024-09-11)*
+### [Diff with v0.2.6](https://github.com/tcodes0/sh/compare/v0.2.7..v0.2.6)
+
+### PRs in this release: [#22](https://github.com/tcodes0/sh/pull/22)
+## Features
+- **lib**: add debug log func with color option via env T0_COLOR ([a35252e4](https://github.com/tcodes0/sh/commit/a35252e4bd895711ff9885b3f5f8e64b4ce2d8a0))
+
+## Documentation
+- **lib**: document global vars ([a7250e01](https://github.com/tcodes0/sh/commit/a7250e010b8f7e2b6a4d24be8ca227382e3b4f01))
+
+## Styling
+- **lib**: color log, err and fatal outputs if T0_COLOR is true ([d0520bd3](https://github.com/tcodes0/sh/commit/d0520bd38b737d1abb75a6454e980a2a86595613))
+
+#### Other
+- **lib**: introduce LIB_GREEN_PASS and LIB_RED_FAIL ([0d9c8e8f](https://github.com/tcodes0/sh/commit/0d9c8e8ff5281447d923f9b7ee1f88fbb64e6a87))
+- rename cmds to t0 prefix ([1b1600c6](https://github.com/tcodes0/sh/commit/1b1600c6b91a9cc8bcdba2cf9b3c15ea9245db57))
+- lint fix ([c5a56291](https://github.com/tcodes0/sh/commit/c5a562913d4245d8da6724638256937026561b74))
+
 # spellcheck and updates: v0.2.6 *(2024-09-08)*
 ### [Diff with v0.2.5](github.com/tcodes0/sh/compare/v0.2.6..v0.2.5)
 
