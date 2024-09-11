@@ -99,6 +99,7 @@ debug() {
 }
 
 # Description: Log a message with ERROR level and line number
+# Globals    : T0_COLOR (env) colored output if "true"
 # Args       : Any
 # STDERR     : ERROR (pizza.sh:34) message + \n
 # Example    : err $LINENO oven temperature too high
@@ -111,6 +112,7 @@ err() {
 }
 
 # Description: Calls err with args, then exits with status 1
+# Globals    : T0_COLOR (env) colored output if "true"
 # Args       : Any
 # STDERR     : FATAL (pizza.sh:34) message + \n
 # Example    : fatal $LINENO we've run out of cheese
