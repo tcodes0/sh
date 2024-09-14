@@ -47,7 +47,7 @@ update_changelog() {
   flags+=(-url "$url")
   flags+=(-tagsfile "${TAGS_FILE:-}")
 
-  changes=$(changelog "${flags[@]}")
+  changes=$(t0changelog "${flags[@]}")
   if [ ! "$changes" ]; then
     err $LINENO "empty changes"
     return 1
