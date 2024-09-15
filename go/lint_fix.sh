@@ -64,7 +64,13 @@ lint() {
       fatal $LINENO "expected $PWD/$path to be a directory with a go package"
     fi
 
-    $linter -fix "$PWD/$path"
+    if ! $linter -fix "$PWD/$path"; then
+      local status=$?
+
+      if [ "$status" -gt 0 ] && [ "$status" != 3 ]; then
+        fatal $LINENO "$linter $PWD/$path: exit status $status"
+      fi
+    fi
 
     if [ -d "$PWD/$path/${path}_test" ]; then
       $linter -fix "$PWD/$path/${path}_test"
